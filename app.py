@@ -30,8 +30,10 @@ print("\nNumber of lurkers:", Lurkers_users_count)
 
 # Task 1.3
 
-c.execute("select u.id,u.username,count(r.id) as reaction_count from users u " \
-          "left join reactions r on u.id=r.user_id " \
+c.execute("select u.id,u.username,count(r.id) + count(cm.id) as reaction_count from users u " \
+          "join posts p on u.id=p.user_id " \
+          "left join reactions r on p.id=r.post_id " \
+            "left join comments cm on p.id=cm.post_id " \
             "group by u.id " \
                 "order by reaction_count desc " \
                 "limit 5")
